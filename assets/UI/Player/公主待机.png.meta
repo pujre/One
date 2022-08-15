@@ -1,0 +1,103 @@
+{
+  "ver": "1.0.23",
+  "importer": "image",
+  "imported": true,
+  "uuid": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "公主待机": {
+      "ver": "1.0.4",
+      "uuid": "ba5c903f-c699-47fa-883e-9cf6d4570e45",
+      "rawTextureUuid": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 1,
+      "offsetY": -1.5,
+      "trimX": 25,
+      "trimY": 14,
+      "width": 81,
+      "height": 72,
+      "rawWidth": 129,
+      "rawHeight": 97,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc@6c48a",
+      "displayName": "公主待机",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc",
+        "isUuid": true,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.21",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc@f9941",
+      "displayName": "公主待机",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 1,
+        "offsetY": -1.5,
+        "trimX": 25,
+        "trimY": 14,
+        "width": 81,
+        "height": 72,
+        "rawWidth": 129,
+        "rawHeight": 97,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.9",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": true,
+    "hasAlpha": true,
+    "redirect": "0252e907-79d0-4633-a87d-a7ea9dd9b8cc@f9941"
+  }
+}
