@@ -520,6 +520,9 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "Player": {
+      "__id__": 10
+    },
     "Anim": {
       "__id__": 13
     },

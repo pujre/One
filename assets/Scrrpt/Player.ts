@@ -1,18 +1,24 @@
-import { _decorator, Component, Node, animation, CCObject, ConeCollider, Animation,NodeEventType } from 'cc';
+import { _decorator, Component, Node, animation, CCObject, ConeCollider, Animation,NodeEventType, SystemEvent, input,Input, EventTouch, EventKeyboard, KeyCode, v2, Vec2, v4, Vec3, math } from 'cc';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
+    @property(Node)
+    Player:Node=null;
     @property(Animation)
     Anim:Animation=null;
+
     JumpMaxHight:number=100;//跳跃的最高值
+    MaxMoveSpeed: Number=5;//最大速度
     PlayerStatus:string="";//人物当前状态
+    Accel:number=0;//加速度
+    IsJump:boolean=false;//是否正在跳跃
     onLoad(){
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+        input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
     onDestroy() {
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+        input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
     
     start() {
@@ -20,21 +26,28 @@ export class Player extends Component {
     }
 
     update(deltaTime: number) {
-        this.onMove(this.MoveDirection);
+        this.onMove(this.PlayerStatus,deltaTime);
     }
 
-    onKeyDown(event) {
+    onKeyDown(event:EventKeyboard) {
+        console.log("A___"+(event.keyCode==KeyCode.KEY_A).toString());
+        console.log("D___"+(event.keyCode==KeyCode.KEY_D).toString());
         switch(event.keyCode){
-            case cc.macro.KEY.left:
-            case cc.macro.KEY.A:
+            case KeyCode.KEY_A:
+                if(this.PlayerStatus=="right"){
+                    console.log("设置了右加速值为0:");
+                    this.Accel = 0;
+                    }
                 this.PlayerStatus="left";
                 break;
-            case cc.macro.KEY.right:
-            case cc.macro.KEY.D:
+            case KeyCode.KEY_D:
+                if(this.PlayerStatus=="left"){
+                    console.log("设置了左加速值为0:");
+                    this.Accel = 0;
+                    }
                 this.PlayerStatus="right";
                 break;
-            case cc.macro.KEY.up:
-            case cc.macro.KEY.W:
+            case KeyCode.KEY_W:
                 if(this.PlayerStatus!="jump"){
                     this.PlayerStatus="jump";
                 }
@@ -43,31 +56,50 @@ export class Player extends Component {
         }
     }
 
-    onKeyUp(event){
-        switch(event.keyCode){
-            case cc.macro.KEY.left:
-            case cc.macro.KEY.A:
-                this.MoveDirection="Idel";
+    onKeyUp(event: EventKeyboard) {
+        switch (event.keyCode) {
+            case KeyCode.KEY_A:
+                if(this.PlayerStatus=="left"){
+                    this.PlayerStatus = "Idel";
+                     this.Accel = 0;
+                }
                 break;
-            case cc.macro.KEY.right:
-            case cc.macro.KEY.D:
-                this.MoveDirection="Idel";
+            case KeyCode.KEY_D:
+                if(this.PlayerStatus=="right"){
+                    this.PlayerStatus = "Idel";
+                    this.Accel = 0;
+                }
+                
                 break;
-            case cc.macro.KEY.up:
-            case cc.macro.KEY.W:
-                this.MoveDirection="Idel";
+            case KeyCode.KEY_W:
+                this.PlayerStatus = "Idel";
                 break
 
         }
     }
 
-    onMove(Status) {
+    onMove(Status,dt) {
         switch(Status){
-            case "left":
-                break;
             case "right":
+               if(this.Accel<this.MaxMoveSpeed){
+                    this.Accel +=  dt*4;
+                }
+                this.Player.position=this.Player.position.add3f(5+this.Accel,0,0);
+                console.log("right:"+this.Accel);
+                break;
+            case "left":
+                if(this.Accel<this.MaxMoveSpeed){
+                    this.Accel +=  dt*4;
+                }
+                this.Player.position=this.Player.position.subtract3f(5+this.Accel,0,0);
+                console.log("left:"+this.Accel);
                 break;
             case "jump":
+                if(!this.IsJump){
+                    moveBy(this.Player.position.x,this.JumpMaxHight);
+                }
+                break;
+            case "Idel":
                 break;
         }
     }
