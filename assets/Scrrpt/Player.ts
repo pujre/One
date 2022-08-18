@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, animation, CCObject, ConeCollider, Animation,NodeEventType, SystemEvent, input,Input, EventTouch, EventKeyboard, KeyCode, v2, Vec2, v4, Vec3, math } from 'cc';
+import { _decorator, Component, Node, animation, CCObject, ConeCollider, Animation,NodeEventType, SystemEvent, input,Input, EventTouch, EventKeyboard, KeyCode, v2, Vec2, v4, Vec3, math, RigidBody2D, tween, Tween, TweenAction } from 'cc';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
@@ -6,8 +6,10 @@ export class Player extends Component {
     Player:Node=null;
     @property(Animation)
     Anim:Animation=null;
-
-    JumpMaxHight:number=100;//跳跃的最高值
+    
+    JumpTween:any=null;
+    jumpDuration:number=0.25;//跳跃时间
+    JumpMaxHight:number=250;//跳跃的最高值
     MaxMoveSpeed: Number=5;//最大速度
     PlayerStatus:string="";//人物当前状态
     Accel:number=0;//加速度
@@ -30,8 +32,6 @@ export class Player extends Component {
     }
 
     onKeyDown(event:EventKeyboard) {
-        console.log("A___"+(event.keyCode==KeyCode.KEY_A).toString());
-        console.log("D___"+(event.keyCode==KeyCode.KEY_D).toString());
         switch(event.keyCode){
             case KeyCode.KEY_A:
                 if(this.PlayerStatus=="right"){
@@ -48,10 +48,11 @@ export class Player extends Component {
                 this.PlayerStatus="right";
                 break;
             case KeyCode.KEY_W:
-                if(this.PlayerStatus!="jump"){
-                    this.PlayerStatus="jump";
+            case KeyCode.SPACE:
+                if(!this.IsJump){
+                    this.IsJump=true;
+                    this.jumpAction();
                 }
-               
                 break
         }
     }
@@ -72,7 +73,8 @@ export class Player extends Component {
                 
                 break;
             case KeyCode.KEY_W:
-                this.PlayerStatus = "Idel";
+            case KeyCode.SPACE:
+                //this.PlayerStatus = "Idel";
                 break
 
         }
@@ -82,28 +84,41 @@ export class Player extends Component {
         switch(Status){
             case "right":
                if(this.Accel<this.MaxMoveSpeed){
-                    this.Accel +=  dt*4;
+                    this.Accel +=  dt*6;
+                }
+                if(this.Player.scale.x<0){
+                    this.Player.setScale(new Vec3(Math.abs(this.Player.scale.x) ,this.Player.scale.y,1));
                 }
                 this.Player.position=this.Player.position.add3f(5+this.Accel,0,0);
-                console.log("right:"+this.Accel);
                 break;
             case "left":
                 if(this.Accel<this.MaxMoveSpeed){
-                    this.Accel +=  dt*4;
+                    this.Accel +=  dt*6;
                 }
+                if(this.Player.scale.x>0){
+                    this.Player.setScale(new Vec3(-Math.abs(this.Player.scale.x) ,this.Player.scale.y,1));
+                }
+               
                 this.Player.position=this.Player.position.subtract3f(5+this.Accel,0,0);
-                console.log("left:"+this.Accel);
                 break;
             case "jump":
-                if(!this.IsJump){
-                    moveBy(this.Player.position.x,this.JumpMaxHight);
-                }
+               
                 break;
             case "Idel":
                 break;
         }
     }
 
+    jumpAction() {
+        this.JumpTween = tween(this.Player)
+        .by(this.jumpDuration, { position: new Vec3(100,this.JumpMaxHight, 0) },{easing:"sineOut"})
+        .by(this.jumpDuration, { position: new Vec3(0,-this.JumpMaxHight, 0) },{easing:"sineOut"})
+        .call(()=>{
+            this.IsJump=false;
+            this.JumpTween.stop();
+        });
+        this.JumpTween.start();
+    }
 
     PlayerControl(str: string) {
         switch (str) {
