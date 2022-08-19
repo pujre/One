@@ -374,7 +374,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Palyer",
+    "_name": "Player",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -515,7 +515,7 @@
       }
     ],
     "_defaultClip": {
-      "__uuid__": "eb5c5cde-bec0-4a80-ad15-4af4c4212385",
+      "__uuid__": "2ad89a7a-e174-4b26-b55c-7bfa3a7f764c",
       "__expectedType__": "cc.AnimationClip"
     },
     "_id": "01b9GFW6NLkpsDdqUwzpjE"
@@ -546,21 +546,21 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 1,
     "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 0,
+    "_gravityScale": 15,
     "_linearDamping": 0,
-    "_angularDamping": 0,
+    "_angularDamping": 0.3,
     "_linearVelocity": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_angularVelocity": 0,
+    "_angularVelocity": 1,
     "_fixedRotation": true,
     "_id": "5f8vIC7V1KnLEOZpkVwwWs"
   },
@@ -575,7 +575,7 @@
     "__prefab": null,
     "tag": 0,
     "_group": 1,
-    "_density": 1,
+    "_density": 0.3,
     "_sensor": false,
     "_friction": 0.2,
     "_restitution": 0,
