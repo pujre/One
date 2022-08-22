@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, animation, CCObject, ConeCollider, Animation, NodeEventType, SystemEvent, input, Input, EventTouch, EventKeyboard, KeyCode, v2, Vec2, v4, Vec3, math, RigidBody2D, tween, Tween, TweenAction, IPhysics2DContact, BoxCollider2D, Contact2DType, Sprite, Color } from 'cc';
+import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button } from 'cc';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
@@ -40,6 +40,33 @@ export class Player extends Component {
 
     }
 
+    callback(button: Button) {
+         switch (button.node.name) {
+             case "Left":
+                 this.Control("left","down");
+                 break;
+             case "Right":
+                 this.Control("right","down");
+                 break;
+             case "Jump":
+                 this.Control("jump","down");
+                 break;
+         }
+    }
+    cancelcallback(button: Button) {
+        switch (button.node.name) {
+            case "Left":
+                this.Control("left","up");
+                break;
+            case "Right":
+                this.Control("right","up");
+                break;
+            case "Jump":
+                this.Control("jump","up");
+                break;
+        }
+   }
+
     update(deltaTime: number) {
         if(this.timeTidat>0){
             this.timeTidat-=deltaTime;
@@ -47,29 +74,65 @@ export class Player extends Component {
         this.onMove(this.PlayerStatus, deltaTime);
     }
 
+    Control(KeyCode:string,str:string) {
+        if(str=="down"){
+            switch (KeyCode) {
+                case "left":
+                    if (this.PlayerStatus == "right") {
+                        this.Accel = 0;
+                    }
+                    this.PlayerStatus = "left";
+                    this.AccelDirection = -1;
+                    break;
+                case "right":
+                    if (this.PlayerStatus == "left") {
+                        this.Accel = 0;
+                    }
+                    this.PlayerStatus = "right";
+                    this.AccelDirection = 1;
+                    break;
+                case "jump":
+                    if (!this.IsJump) {
+                        this.jumpAction();
+                    }
+                    break;
+            }
+        }
+        if(str=="up"){
+            switch (KeyCode) {
+                case "left":
+                    if (this.PlayerStatus == "left") {
+                        this.PlayerStatus = "Idel";
+                        this.Accel = 0;
+                    }
+                    break;
+                case "right":
+                    if (this.PlayerStatus == "right") {
+                        this.PlayerStatus = "Idel";
+                        this.Accel = 0;
+                    }
+                    break;
+                case "jump":
+                    
+                    break;
+            }
+        }
+       
+    }
+
 
 
     onKeyDown(event: EventKeyboard) {
         switch (event.keyCode) {
             case KeyCode.KEY_A:
-                if (this.PlayerStatus == "right") {
-                    this.Accel = 0;
-                }
-                this.PlayerStatus = "left";
-                this.AccelDirection = -1;
+               this.Control("left","down");
                 break;
             case KeyCode.KEY_D:
-                if (this.PlayerStatus == "left") {
-                    this.Accel = 0;
-                }
-                this.PlayerStatus = "right";
-                this.AccelDirection = 1;
+                this.Control("right","down");
                 break;
             case KeyCode.KEY_W:
             case KeyCode.SPACE:
-                if (!this.IsJump) {
-                    this.jumpAction();
-                }
+                this.Control("jump","down");
                 break
         }
     }
@@ -77,19 +140,14 @@ export class Player extends Component {
     onKeyUp(event: EventKeyboard) {
         switch (event.keyCode) {
             case KeyCode.KEY_A:
-                if (this.PlayerStatus == "left") {
-                    this.PlayerStatus = "Idel";
-                    this.Accel = 0;
-                }
+                this.Control("left","up");
                 break;
             case KeyCode.KEY_D:
-                if (this.PlayerStatus == "right") {
-                    this.PlayerStatus = "Idel";
-                    this.Accel = 0;
-                }
+                this.Control("right","up");
                 break;
             case KeyCode.KEY_W:
             case KeyCode.SPACE:
+                this.Control("jump","up");
                 break
 
         }
