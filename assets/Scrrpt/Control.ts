@@ -17,9 +17,9 @@ export class Control extends Component {
             this.Left.on(NodeEventType.TOUCH_START, this.PlayerScript.callback, this.PlayerScript);
             this.Right.on(NodeEventType.TOUCH_START, this.PlayerScript.callback, this.PlayerScript);
             this.Up.on(NodeEventType.TOUCH_START, this.PlayerScript.callback, this.PlayerScript);
-            this.Left.on(NodeEventType.TOUCH_CANCEL, this.PlayerScript.cancelcallback, this.PlayerScript);
-            this.Right.on(NodeEventType.TOUCH_CANCEL, this.PlayerScript.cancelcallback, this.PlayerScript);
-            this.Up.on(NodeEventType.TOUCH_CANCEL, this.PlayerScript.cancelcallback, this.PlayerScript);
+            this.Left.on(NodeEventType.TOUCH_END, this.PlayerScript.cancelcallback, this.PlayerScript);
+            this.Right.on(NodeEventType.TOUCH_END, this.PlayerScript.cancelcallback, this.PlayerScript);
+            this.Up.on(NodeEventType.TOUCH_END, this.PlayerScript.cancelcallback, this.PlayerScript);
         }
     }
 

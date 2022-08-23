@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button } from 'cc';
+import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch } from 'cc';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
@@ -40,8 +40,8 @@ export class Player extends Component {
 
     }
 
-    callback(button: Button) {
-         switch (button.node.name) {
+    callback(event: EventTouch) {
+         switch (event.currentTarget.name) {
              case "Left":
                  this.Control("left","down");
                  break;
@@ -53,8 +53,8 @@ export class Player extends Component {
                  break;
          }
     }
-    cancelcallback(button: Button) {
-        switch (button.node.name) {
+    cancelcallback(event: EventTouch) {
+        switch (event.currentTarget.name) {
             case "Left":
                 this.Control("left","up");
                 break;
