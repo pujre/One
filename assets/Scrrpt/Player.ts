@@ -181,6 +181,7 @@ export class Player extends Component {
     jumpAction() {
         this.timeTidat=0.1;
         this.IsJump = true;
+        this.Player.getComponent(RigidBody2D).linearVelocity=new Vec2(0,0);
         this.Player.getComponent(RigidBody2D).applyLinearImpulseToCenter(new Vec2(0, this.JumpMaxHight), true);
         this.Anim.play("Player_Jump");
         //this.Player.getComponent(Sprite).color=Color.RED;
