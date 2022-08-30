@@ -1,12 +1,16 @@
 import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact } from 'cc';
-const { ccclass,property} = _decorator;
+const { ccclass, property } = _decorator;
 
-@ccclass('CollisionGold')
-export class CollisionGold extends Component {
+@ccclass('CoinBox')
+export class CoinBox extends Component {
     @property(Node)
     Coin:Node=null;
     start() {
 
+    }
+
+    update(deltaTime: number) {
+        
     }
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
