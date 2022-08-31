@@ -29,8 +29,8 @@ export class Player extends Component {
             this.IsJump = false;
             //this.Player.getComponent(Sprite).color=Color.WHITE;
         }
-
     }
+
     onDestroy() {
         input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
