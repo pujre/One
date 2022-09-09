@@ -11,7 +11,7 @@ export class Player extends Component {
     timeTidat:number=0;
     JumpTween: any = null;
     jumpDuration: number = 0.25;//跳跃时间
-    JumpMaxHight: number = 120;//跳跃的最高值
+    JumpMaxHight: number = 400;//跳跃的最高值
     MaxMoveSpeed: Number = 5;//最大速度
     Accel: number = 0;//加速度
     AccelDirection: number = 1;//加速度方向
@@ -85,14 +85,6 @@ export class Player extends Component {
             this.timeTidat-=deltaTime;
         }
         this.onMove(this.PlayerStatus, deltaTime);
-        if(this.IsJump){
-            // this.UpDownTime+=deltaTime;
-            // if(this.UpDownTime<0.35){
-            //     this.PlayerRigidBody2D.applyLinearImpulseToCenter(new Vec2(0, this.JumpMaxHight-=deltaTime*12), true);
-            // }else{
-            //     this.PlayerRigidBody2D.applyLinearImpulseToCenter(new Vec2(0, -1), true);
-            // }
-        }
     }
 
     Control(KeyCode:string,str:string) {

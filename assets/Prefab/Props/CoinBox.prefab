@@ -217,7 +217,11 @@
     "__prefab": {
       "__id__": 11
     },
-    "Coin": null,
+    "CoinFrequency": 1,
+    "Coin": {
+      "__uuid__": "e13a9bf4-4cb1-4f9a-bad1-62369cd48552",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": ""
   },
   {
