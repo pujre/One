@@ -1,4 +1,5 @@
-import { _decorator, Component, Node, Button, NodeEventType } from 'cc';
+import { _decorator, Component, Node, Button, NodeEventType, EventTouch } from 'cc';
+import { GameManager } from './GameManager';
 import { Player } from './Player';
 const { ccclass, property } = _decorator;
 @ccclass('Control')
@@ -22,6 +23,10 @@ export class Control extends Component {
             this.Up.on(NodeEventType.TOUCH_END, this.PlayerScript.cancelcallback, this.PlayerScript);
         }
     }
+
+
+
+
 
     update(deltaTime: number) {
         

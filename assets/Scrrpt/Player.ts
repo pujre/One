@@ -1,4 +1,5 @@
 import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch } from 'cc';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
@@ -162,7 +163,9 @@ export class Player extends Component {
             case KeyCode.SPACE:
                 this.Control("jump","up");
                 break
-
+            case KeyCode.KEY_R:
+                GameManager.Instance().LoadLevel(2);
+                break;
         }
     }
 
