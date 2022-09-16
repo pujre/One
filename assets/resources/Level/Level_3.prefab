@@ -773,7 +773,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 18.624,
-      "y": 75.108,
+      "y": 148.925,
       "z": 0
     },
     "_lrot": {
@@ -881,7 +881,7 @@
     "__prefab": {
       "__id__": 49
     },
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 1,
@@ -947,8 +947,8 @@
     "__prefab": {
       "__id__": 53
     },
-    "NodeAnimName": 0.01,
     "tweenDuration": 0.5,
+    "NodeAnimName": 1,
     "_id": ""
   },
   {

@@ -34,12 +34,21 @@ export class Player extends Component {
     }
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if (otherCollider.node.position.y <selfCollider.node.position.y && this.IsJump&&this.timeTidat<=0) {
+        if ( this.isStepOn(otherCollider)&& this.IsJump&&this.timeTidat<=0) {
             this.IsJump = false;
             this. PlayerAnim.play("Player_ider");
             //this.Player.getComponent(Sprite).color=Color.WHITE;
         }else if(otherCollider.node.name=='Player_g'){
             console.log('游戏通关');
+        }
+    }
+
+    //玩家是否踩在某个物体上面
+    isStepOn(otherCollider: BoxCollider2D){
+        if(otherCollider.node.position.y <this.node.position.y&&this.node.position.x>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x<=(otherCollider.node.position.x+otherCollider.size.x/2)){
+            return true
+        }else{
+            return false;
         }
     }
 
@@ -164,7 +173,7 @@ export class Player extends Component {
                 this.Control("jump","up");
                 break
             case KeyCode.KEY_R:
-                GameManager.Instance().LoadLevel(2);
+                GameManager.Instance().LoadLevel(3);
                 break;
         }
     }
