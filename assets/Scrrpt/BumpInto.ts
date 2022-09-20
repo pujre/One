@@ -1,14 +1,20 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Sprite, Color, tween, Enum, Contact2DType } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Sprite, Color, tween, Enum, Contact2DType, animation, color, Vec3, Vec2, Size } from 'cc';
 import { AnimName } from './AnimName';
 const { ccclass, property } = _decorator;
 
 @ccclass('BumpInto')
 export class BumpInto extends Component {
-    @property({range:[0.1,3,0.1],slide:true,displayName:'完成动作的时间'})
-    tweenDuration:number=0.5;
+   
     @property({type:Enum(AnimName),displayName:'碰到后的动作'})
     NodeAnimName:AnimName=AnimName._Color;
 
+    @property({type:Color,displayName:'完成动作的时间',visible () {return this.NodeAnimName==AnimName._Color}})
+    AnimColor:Color;
+
+    @property({type:Node,displayName:'要删除的物品',visible () {return this.NodeAnimName==AnimName._Delete}})
+    AnimDeleteNode:Node=null;
+    @property({type:Boolean,displayName:'是否触发',visible () {return this.NodeAnimName==AnimName._Delete}})
+    WhetherToTrigger:boolean=false;
    
     start() {
         let collider = this.node.getComponent(BoxCollider2D);
@@ -21,20 +27,22 @@ export class BumpInto extends Component {
        
     }
 
+
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        console.log('otherCollider.node.name:'+otherCollider.node.name);
         if (otherCollider.node.name == 'Player') {
             switch (this.NodeAnimName) {
                 case AnimName._Color:
-                        this.node.getComponent(Sprite).color=Color.WHITE;
-                //     let sprite : Sprite = this.node.getComponent(Sprite) ;
-                //     tween(this.node.getComponent(Sprite))
-                //     .by( this.tweenDuration, { color: Color.WHITE }, {
-                //         onUpdate(tar:Sprite){
-                //             sprite.color = tar.color;  // 设置精灵的为 BindTarget 内的颜色
-                //         }
-                // }).start()
-                break;
+                    this.node.getComponent(Sprite).color = Color.WHITE;
+                    break;
+                case AnimName._Delete:
+                    if(this.WhetherToTrigger)return;
+                    console.log('__Delete,钥匙');
+                    this.WhetherToTrigger=true;
+                    setTimeout(() => {
+                        this.node.destroy();
+                        this.AnimDeleteNode.destroy();
+                    }, 0.1);
+                    break;
             }
         }
     }

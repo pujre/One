@@ -5,13 +5,13 @@ const { ccclass, property } = _decorator;
 export class Cion extends Component {
     UIOpacity:UIOpacity=null;
     @property({range:[30,250,1],slide:true,displayName:'金币上跳的高度'})
-    Distance:number=70;
+    Distance:number=40;
     @property({range:[0.3,3,0.01],slide:true,displayName:'播放金币的动画时间'})
     AnimTime:number=0.4;//
     @property({range:[0.3,3,0.01],slide:true,displayName:'金币淡出的时间'})
     TransparentTime:number=0.4;
     opstDistance:number=0;
-    ReadyToDelete:boolean=false;
+    ReadyToDelete:number=0;//准备状态
     start() {
         this.opstDistance=0;
         this.UIOpacity=this.node.getComponent(UIOpacity);
@@ -19,7 +19,7 @@ export class Cion extends Component {
     }
 
     update(deltaTime: number) {
-        if(!this.ReadyToDelete){
+        if(this.ReadyToDelete==1){
             if(this.opstDistance<this.Distance){
                 var des=(this.Distance/this.AnimTime)/this.AnimTime * deltaTime;
                 this.opstDistance+=des;
@@ -30,7 +30,7 @@ export class Cion extends Component {
                 if(this.UIOpacity.opacity>0){
                     this.UIOpacity.opacity-=opca;
                 }else{
-                    this.ReadyToDelete=true;
+                    this.ReadyToDelete=2;
                     this.destroy();
                 }
             }
