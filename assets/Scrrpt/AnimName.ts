@@ -6,5 +6,6 @@ export enum AnimName{
     _Position=2,
     _Scale=3, 
     _Delete=4,
+    _Hide,
 }; 
 

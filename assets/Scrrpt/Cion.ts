@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, random, randomRange, UIOpacity } from 'cc';
+import { _decorator, Component, Node, random, randomRange, UIOpacity, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Cion')
@@ -12,18 +12,13 @@ export class Cion extends Component {
     TransparentTime:number=0.4;
     opstDistance:number=0;
     ReadyToDelete:number=0;//准备状态
-    start() {
-        this.opstDistance=0;
-        this.UIOpacity=this.node.getComponent(UIOpacity);
-        this.UIOpacity.opacity=255;
-    }
 
     update(deltaTime: number) {
         if(this.ReadyToDelete==1){
             if(this.opstDistance<this.Distance){
                 var des=(this.Distance/this.AnimTime)/this.AnimTime * deltaTime;
                 this.opstDistance+=des;
-                this.node.position = this.node.position.add3f(0,des,0);
+                this.node.position =new Vec3(this.node.position.x, this.node.position.y+des,this.node.position.z);
                
             } else if(this.opstDistance>=this.Distance){
                 var opca=(255/this.TransparentTime) * deltaTime;
@@ -31,11 +26,19 @@ export class Cion extends Component {
                     this.UIOpacity.opacity-=opca;
                 }else{
                     this.ReadyToDelete=2;
-                    this.destroy();
+                    this.node.active=false;
                 }
             }
         }
-      
+    }
+
+    CoinReset(pos:Vec3,parent:Node){
+        this.node.setParent(parent);
+        this.node.setPosition(pos.x,pos.y+60,pos.z);
+        this.ReadyToDelete=1;
+        this.UIOpacity=this.node.getComponent(UIOpacity);
+        this.UIOpacity.opacity=255;
+        this.opstDistance=0;
     }
 }
 

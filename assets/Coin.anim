@@ -4,11 +4,11 @@
     "_name": "Coin",
     "_objFlags": 0,
     "_native": "",
-    "sample": 60,
+    "sample": 8,
     "speed": 1,
     "wrapMode": 2,
     "enableTrsBlending": false,
-    "_duration": 0.18333333333333332,
+    "_duration": 0.75,
     "_hash": 500763545,
     "_tracks": [
       {
@@ -53,11 +53,11 @@
     "__type__": "cc.ObjectCurve",
     "_times": [
       0,
-      0.03333333333333333,
-      0.06666666666666667,
-      0.1,
-      0.13333333333333333,
-      0.16666666666666666
+      0.125,
+      0.25,
+      0.375,
+      0.5,
+      0.625
     ],
     "_values": [
       {
@@ -69,7 +69,7 @@
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "63bbfe4a-00fd-4ffb-8e7e-2980c83c0636@f9941",
+        "__uuid__": "3b3196eb-2ec5-4f06-85cf-8a45022d3bf9@f9941",
         "__expectedType__": "cc.SpriteFrame"
       },
       {

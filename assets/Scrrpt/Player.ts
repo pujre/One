@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch } from 'cc';
+import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch, UITransform } from 'cc';
 import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
@@ -45,7 +45,11 @@ export class Player extends Component {
 
     //玩家是否踩在某个物体上面
     isStepOn(otherCollider: BoxCollider2D){
-        if(otherCollider.node.position.y <this.node.position.y&&this.node.position.x>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x<=(otherCollider.node.position.x+otherCollider.size.x/2)){
+        if(otherCollider.node.position.y <this.node.position.y&&
+            (this.node.position.x>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x<=(otherCollider.node.position.x+otherCollider.size.x/2))||
+            (this.node.position.x-this.node.getComponent(UITransform).contentSize.x/2>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x-this.node.getComponent(UITransform).contentSize.x/2<=(otherCollider.node.position.x+otherCollider.size.x/2))||
+            (this.node.position.x+this.node.getComponent(UITransform).contentSize.x/2>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x+this.node.getComponent(UITransform).contentSize.x/2<=(otherCollider.node.position.x+otherCollider.size.x/2))
+            ){
             return true
         }else{
             return false;
