@@ -35,20 +35,20 @@ export class BumpInto extends Component {
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
         if (otherCollider.node.name == 'Player') {
             switch (this.NodeAnimName) {
-                 case AnimName._Color:
-                     //this.node.getComponent(Sprite).color =this.AnimColor;
-                     break;
-                // case AnimName._Delete:
-                //     if(this.WhetherToTrigger)return;
-                //     console.log('__Delete,钥匙');
-                //     this.WhetherToTrigger=true;
-                //     setTimeout(() => {
-                //         this.node.destroy();
-                //         this.AnimDeleteNode.destroy();
-                //     }, 0.1);
-                //     break;
-                // case AnimName._Hide:
-                //     break;
+                case AnimName._Color:
+                    this.node.getComponent(Sprite).color = this.AnimColor;
+                    break;
+                case AnimName._Delete:
+                    if (this.WhetherToTrigger) return;
+                    console.log('__Delete,钥匙');
+                    this.WhetherToTrigger = true;
+                    setTimeout(() => {
+                        this.node.destroy();
+                        this.AnimDeleteNode.destroy();
+                    }, 0.1);
+                    break;
+                case AnimName._Hide:
+                    break;
             }
         }
     }

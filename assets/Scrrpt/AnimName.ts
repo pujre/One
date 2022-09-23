@@ -9,3 +9,9 @@ export enum AnimName{
     _Hide,
 }; 
 
+///金币宝箱顶出物体
+export enum CoinBOXGift{
+    Coin,
+    Monster,
+}
+

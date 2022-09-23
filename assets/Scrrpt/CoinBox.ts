@@ -1,15 +1,22 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform, Enum } from 'cc';
 import { Cion } from './Cion';
+import { CoinBOXGift } from './AnimName';
 const { ccclass, property } = _decorator;
 
 @ccclass('CoinBox')
 export class CoinBox extends Component {
-    @property()
-    CoinFrequency:number=1;
-    @property(Node)
-    Coin:Node=null;
-    collider:BoxCollider2D=null;
+    @property({type:Enum(CoinBOXGift),displayName:'顶出来的东西类型'})
+    BoxType:CoinBOXGift=CoinBOXGift.Coin;
 
+    @property({range:[0,5,0.1],slide:true,type:Number,displayName:'可以顶的次数',visible () {return this.BoxType==CoinBOXGift.Coin}})
+    CoinFrequency:number=1;
+    @property({type:Node,displayName:'金币',visible () {return this.BoxType==CoinBOXGift.Coin}})
+    Coin:Node=null;
+
+    @property({type:Node,displayName:'怪兽',visible () {return this.BoxType==CoinBOXGift.Monster}})
+    Monster:Node=null;
+
+    collider:BoxCollider2D=null;
     Oef:number=0.2;//防止短时间内多次触发
 
     start() {
@@ -30,22 +37,29 @@ export class CoinBox extends Component {
     }
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if (this.Oef<=0&&this.CoinFrequency>0&&otherCollider.node.name == 'Player' && 
-            otherCollider.node.position.y < selfCollider.node.position.y&&this.BoxXIsIntersect(otherCollider.node,this.node)) {
-            //往上移动
-            this.CoinFrequency--;
-            this.Coin.active=true;
-            this.Coin.getComponent(Cion).CoinReset(selfCollider.node.position,selfCollider.node.parent);
-            setTimeout(() => {
-                this.Coin.getComponent(Animation).play();
-                this.Oef=0.2;
-                let t1 = tween(this.node).to(0.05, { scale: new Vec3(1.4, 1.4, 0) })
-                let t2 = tween(this.node).to(0.05, { scale: new Vec3(1, 1, 1) })
-                tween(this.node).sequence(t1, t2).start();
-                if(this.CoinFrequency<=0){
-                    this.node.getComponent(Sprite).color=new Color(70,70,70,255);//变灰色
-                }
-            }, 0.1);
+        if (this.Oef <= 0 && this.CoinFrequency > 0 && otherCollider.node.name == 'Player' &&
+            otherCollider.node.position.y < selfCollider.node.position.y && this.BoxXIsIntersect(otherCollider.node, this.node)) {
+            switch (this.BoxType) {
+                case CoinBOXGift.Coin:
+                    //往上移动
+                    this.CoinFrequency--;
+                    this.Coin.active = true;
+                    this.Coin.getComponent(Cion).CoinReset(selfCollider.node.position, selfCollider.node.parent);
+                    setTimeout(() => {
+                        this.Coin.getComponent(Animation).play();
+                        this.Oef = 0.2;
+                        let t1 = tween(this.node).to(0.05, { scale: new Vec3(1.4, 1.4, 0) })
+                        let t2 = tween(this.node).to(0.05, { scale: new Vec3(1, 1, 1) })
+                        tween(this.node).sequence(t1, t2).start();
+                        if (this.CoinFrequency <= 0) {
+                            this.node.getComponent(Sprite).color = new Color(70, 70, 70, 255);//变灰色
+                        }
+                    }, 0.1);
+                    break;
+                case CoinBOXGift.Monster:
+                    this.Monster.active = true;
+                    break;
+            }
         }
     }
 
