@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform, Enum, resources } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform, Enum, resources, RigidBody, RigidBody2D } from 'cc';
 import { Cion } from './Cion';
 import { CoinBOXGift, MonsterBehavior } from './AnimName';
 import { Monster } from './Monster';
@@ -42,9 +42,10 @@ export class CoinBox extends PropBase {
                     resources.load('Props/Cion', (err, data) => {
                         if (err == undefined||err == null) {
                             this.PropCNode=instantiate(data);
+                            this.PropCNode.setParent(this.node.parent);
                             this.PropCNode.getComponent(PropBase).OnPropStart(selfCollider.node.position, selfCollider.node.parent);
                             setTimeout(() => {
-                                //this.PropCNode.getComponent(Animation).play();
+                                this.PropCNode.getComponent(Animation).play();
                                 this.CnodeTimeAnim();
                             }, 0.1);
                         }
@@ -57,7 +58,7 @@ export class CoinBox extends PropBase {
                         if (err == undefined||err == null) {
                             this.PropCNode=instantiate(data);
                             this.PropCNode.getComponent(Monster).MonsterBehaviorType=MonsterBehavior._Prop_1;
-                            this.PropCNode.getComponent(PropBase).OnPropStart(otherCollider.node,null);
+                            this.PropCNode.getComponent(Monster).OnPropStart(selfCollider.node,null);
                             this.CnodeTimeAnim();
                         }
                     })
