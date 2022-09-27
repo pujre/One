@@ -1,8 +1,10 @@
 import { _decorator, Component, Node, random, randomRange, UIOpacity, Vec3 } from 'cc';
+import { PropBase } from './PropBase';
 const { ccclass, property } = _decorator;
 
 @ccclass('Cion')
-export class Cion extends Component {
+export class Cion extends PropBase {
+    
     UIOpacity:UIOpacity=null;
     @property({range:[30,250,1],slide:true,displayName:'金币上跳的高度'})
     Distance:number=40;
@@ -32,7 +34,8 @@ export class Cion extends Component {
         }
     }
 
-    CoinReset(pos:Vec3,parent:Node){
+
+    OnPropStart(pos: any, parent: any): void {
         this.node.setParent(parent);
         this.node.setPosition(pos.x,pos.y+60,pos.z);
         this.ReadyToDelete=1;
@@ -40,5 +43,6 @@ export class Cion extends Component {
         this.UIOpacity.opacity=255;
         this.opstDistance=0;
     }
+
 }
 

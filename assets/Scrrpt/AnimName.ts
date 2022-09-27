@@ -15,3 +15,8 @@ export enum CoinBOXGift{
     Monster,
 }
 
+export enum MonsterBehavior{
+    _Prop_1,
+    _Move,
+}
+
