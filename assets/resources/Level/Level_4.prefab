@@ -2472,6 +2472,8 @@
       "__id__": 62
     },
     "WhetherToTrigger": false,
+    "HideNode": null,
+    "TimeAction": 0,
     "_id": ""
   },
   {

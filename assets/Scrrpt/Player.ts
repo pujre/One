@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch, UITransform } from 'cc';
+import { _decorator, Component, Node, Animation, input, Input, EventKeyboard, KeyCode, Vec2,  Vec3,  RigidBody2D, IPhysics2DContact, BoxCollider2D, Contact2DType, Button, EventTouch, UITransform, PolygonCollider2D, v2 } from 'cc';
 import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 @ccclass('Player')
@@ -24,7 +24,7 @@ export class Player extends Component {
         this.PlayerAnim=this.Player.getComponent(Animation);
         this.PlayerRigidBody2D=this.Player.getComponent(RigidBody2D);
 
-        let collider = this.Player.getComponent(BoxCollider2D);
+        let collider = this.Player.getComponent(PolygonCollider2D);
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
@@ -33,28 +33,18 @@ export class Player extends Component {
         input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
 
-    onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if ( this.isStepOn(otherCollider)&& this.IsJump&&this.timeTidat<=0) {
+    onBeginContact(selfCollider: PolygonCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
+        if ((this.IsJump&&this.timeTidat<=0)) {
             this.IsJump = false;
-            this. PlayerAnim.play("Player_ider");
-            //this.Player.getComponent(Sprite).color=Color.WHITE;
-        }else if(otherCollider.node.name=='Player_g'){
+            this.PlayerAnim.play("Player_ider");
+        }else
+        if(otherCollider.node.name=='Player_g'){
             console.log('游戏通关');
         }
     }
 
-    //玩家是否踩在某个物体上面
-    isStepOn(otherCollider: BoxCollider2D){
-        if(otherCollider.node.position.y <this.node.position.y&&
-            (this.node.position.x>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x<=(otherCollider.node.position.x+otherCollider.size.x/2))||
-            (this.node.position.x-this.node.getComponent(UITransform).contentSize.x/2>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x-this.node.getComponent(UITransform).contentSize.x/2<=(otherCollider.node.position.x+otherCollider.size.x/2))||
-            (this.node.position.x+this.node.getComponent(UITransform).contentSize.x/2>=(otherCollider.node.position.x-otherCollider.size.x/2)&&this.node.position.x+this.node.getComponent(UITransform).contentSize.x/2<=(otherCollider.node.position.x+otherCollider.size.x/2))
-            ){
-            return true
-        }else{
-            return false;
-        }
-    }
+
+
 
     onDestroy() {
         input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
@@ -177,7 +167,7 @@ export class Player extends Component {
                 this.Control("jump","up");
                 break
             case KeyCode.KEY_R:
-                GameManager.Instance().LoadLevel(6);
+                GameManager.Instance().LoadLevel(7);
                 break;
         }
     }
@@ -208,7 +198,7 @@ export class Player extends Component {
     }
 
     jumpAction() {
-        this.timeTidat=0.15;
+        this.timeTidat=0.3;
         this.PlayerRigidBody2D.linearVelocity=new Vec2(0,0);
         this.UpDownTime=0;
         this.IsJump = true;

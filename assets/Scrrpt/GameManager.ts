@@ -1,9 +1,11 @@
-import { _decorator, Component, Node, instantiate, resources, Prefab, Vec3, find, UITransform } from 'cc';
+import { _decorator, Component, Node, instantiate, resources, Prefab, Vec3, find, UITransform, PhysicsSystem2D, EPhysics2DDrawFlags, CCBoolean, Vec2, Rect, Size } from 'cc';
 import { Control } from './Control';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
+    @property(CCBoolean)
+    IsdebugDrawFlags:boolean=false;
     static _instance:GameManager=null;
     Control:Control=null;
     @property(Node)
@@ -23,8 +25,16 @@ export class GameManager extends Component {
         return GameManager._instance;
     }
 
-    onLoad(){
-        GameManager._instance=this;
+    onLoad() {
+        GameManager._instance = this;
+        if(this.IsdebugDrawFlags){
+            PhysicsSystem2D.instance.debugDrawFlags = EPhysics2DDrawFlags.Aabb |
+            EPhysics2DDrawFlags.Pair |
+            EPhysics2DDrawFlags.CenterOfMass |
+            EPhysics2DDrawFlags.Joint |
+            EPhysics2DDrawFlags.Shape;
+        }
+       
     }
     start() {
         if(this.Control==null){
@@ -64,6 +74,18 @@ export class GameManager extends Component {
                 Player_p.destroy();
             }
         })
+    }
+
+    GteCollior(v1:Vec2,v2:Vec2,v1rect:Size):string{
+        if         (v1.y + v1rect.y / 2 >= v2.y) {
+            return "Down";
+        } else  if (v1.y - v1rect.y / 2 <= v2.x) {
+                return "Up";
+        }else  if (v1.x + v1rect.x / 2 <= v2.x) {
+            return "Right";
+        }else  if (v1.x - v1rect.x / 2 >= v2.x) {
+            return "Left";
+        }
     }
 }
 

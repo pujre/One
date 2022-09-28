@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform, Enum, resources, RigidBody, RigidBody2D } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Prefab, instantiate, Vec3, Animation, Contact2DType, SpriteFrame, Sprite, color, Color, TweenAction, Tween, tween, UITransform, Enum, resources, RigidBody, RigidBody2D, CCInteger } from 'cc';
 import { Cion } from './Cion';
 import { CoinBOXGift, MonsterBehavior } from './AnimName';
 import { Monster } from './Monster';
@@ -11,7 +11,7 @@ export class CoinBox extends PropBase {
     
     @property({type:Enum(CoinBOXGift),displayName:'顶出来的东西类型'})
     BoxType:CoinBOXGift=CoinBOXGift.Coin;
-    @property({range:[0,5,1],slide:true,type:Number,displayName:'可以顶的次数'})
+    @property({range:[0,5,1],slide:true,type:CCInteger,displayName:'可以顶的次数'})
     CoinFrequency:number=1;
 
     PropCNode=null;
@@ -35,7 +35,7 @@ export class CoinBox extends PropBase {
     
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if (this.Oef <= 0 &&this.CoinFrequency >0 && otherCollider.node.name == 'Player' &&otherCollider.node.position.y < selfCollider.node.position.y &&MathTool.BoxXIsIntersect(otherCollider.node, this.node)) {
+        if (this.Oef <= 0 &&this.CoinFrequency >0 && otherCollider.node.name == 'Player_Up' &&otherCollider.node.position.y < selfCollider.node.position.y ) {
             switch (this.BoxType) {
                 case CoinBOXGift.Coin:
                     this.CoinFrequency--; 
