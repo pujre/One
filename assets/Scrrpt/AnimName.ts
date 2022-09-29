@@ -13,6 +13,7 @@ export enum AnimName{
 export enum CoinBOXGift{
     Coin,
     Monster,
+    Spikes,
 }
 
 export enum MonsterBehavior{

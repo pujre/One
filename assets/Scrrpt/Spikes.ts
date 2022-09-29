@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, UITransform, size, Size, PhysicsSystem2D } from 'cc';
 import { PropBase } from './PropBase';
 const { ccclass, property } = _decorator;
 
@@ -12,14 +12,18 @@ export class Spikes extends PropBase {
        super.onDestroy;
     }
 
-    OnPropStart(a,b){
-       
+    OnPropStart(a:Node,b){
+        this.node.setParent(a.parent);
+        this.node.position=a.position.subtract3f(0,a.getComponent(UITransform).contentSize.y/2+this.node.getComponent(UITransform).contentSize.y/2,0);
+        let NewSize=new Size(a.getComponent(UITransform).contentSize.width,this.node.getComponent(UITransform).contentSize.height);
+        this.node.getComponent(UITransform).contentSize.set(NewSize.width,NewSize.height);
+        this.node.getComponent(BoxCollider2D).size.set(NewSize.width,NewSize.height);
+        this.node.getComponent(BoxCollider2D).apply();        
     }
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if(selfCollider.node.name=='Player'){
+        if(otherCollider.node.name=='Player'){
             console.log('玩家死亡，游戏结束');
-            
         }
     }
 

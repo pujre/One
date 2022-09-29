@@ -4,6 +4,7 @@ import { CoinBOXGift, MonsterBehavior } from './AnimName';
 import { Monster } from './Monster';
 import { PropBase } from './PropBase';
 import { MathTool } from './MathTool';
+import { Spikes } from './Spikes';
 const { ccclass, property } = _decorator;
 
 @ccclass('CoinBox')
@@ -35,7 +36,7 @@ export class CoinBox extends PropBase {
     
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        if (this.Oef <= 0 &&this.CoinFrequency >0 && otherCollider.node.name == 'Player_Up' &&otherCollider.node.position.y < selfCollider.node.position.y ) {
+        if (this.Oef <= 0 &&this.CoinFrequency >0 && otherCollider.node.name == 'Player' &&otherCollider.node.position.y < selfCollider.node.position.y ) {
             switch (this.BoxType) {
                 case CoinBOXGift.Coin:
                     this.CoinFrequency--; 
@@ -54,7 +55,6 @@ export class CoinBox extends PropBase {
                 case CoinBOXGift.Monster:
                     this.CoinFrequency--;
                     resources.load('Props/Monster', (err, data) => {
-                        console.log(err,data);
                         if (err == undefined||err == null) {
                             this.PropCNode=instantiate(data);
                             this.PropCNode.getComponent(Monster).MonsterBehaviorType=MonsterBehavior._Prop_1;
@@ -63,6 +63,15 @@ export class CoinBox extends PropBase {
                         }
                     })
                     break;
+                case CoinBOXGift.Spikes:
+                    this.CoinFrequency--;
+                    resources.load('Props/Spikes',(err,data)=>{
+                        if (err == undefined||err == null) {
+                            this.PropCNode=instantiate(data);
+                            this.PropCNode.getComponent(Spikes).OnPropStart(selfCollider.node,null);
+                            this.CnodeTimeAnim();
+                        }
+                    })
             }
            
         }

@@ -167,7 +167,7 @@ export class Player extends Component {
                 this.Control("jump","up");
                 break
             case KeyCode.KEY_R:
-                GameManager.Instance().LoadLevel(7);
+                GameManager.Instance().LoadLevel(8);
                 break;
         }
     }
