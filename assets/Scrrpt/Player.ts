@@ -34,6 +34,8 @@ export class Player extends Component {
     }
 
     onBeginContact(selfCollider: PolygonCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
+        // GameManager.Instance().GteCollior(new Vec2(selfCollider.node.position.x,selfCollider.node.position.y),
+        // contact.getManifold().points[0])>180
         if ((this.IsJump&&this.timeTidat<=0)) {
             this.IsJump = false;
             this.PlayerAnim.play("Player_ider");

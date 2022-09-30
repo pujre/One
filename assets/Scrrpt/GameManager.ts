@@ -18,6 +18,7 @@ export class GameManager extends Component {
 
     LevelNodeSize:Node=null;
     LevelNodeSizeUITransform:UITransform=null;
+    NowLevel:number=0;
     CameraWPosition:Vec3;
     
 
@@ -54,6 +55,10 @@ export class GameManager extends Component {
         }
     }
 
+    LoadNextLevel(){
+        this.LoadLevel(this.NowLevel+1);
+    }
+
     LoadLevel(level:number){
         this.LevelNode?.destroy();
         console.log("加载关卡—-----："+level.toString());
@@ -62,30 +67,29 @@ export class GameManager extends Component {
                 this.LevelNode=instantiate(data);
                 this.LevelNode.setParent(this.GameNode);
                 var Player_p=this.LevelNode.getChildByName('Player_p');
+                this.GameCamera.position=Vec3.ZERO;
                 this.LevelNodeSize=this.LevelNode.getChildByName('Size');
                 this.CameraIsMove=this.LevelNodeSize?true:false;
                 if(this.CameraIsMove){
                     this.LevelNodeSizeUITransform=this.LevelNodeSize.getComponent(UITransform);
-                    
-                }else{
-                    this.GameCamera.position=new Vec3(0,0,0);
                 }
                 this.Control.PlayerScript.node.position=Player_p.position;
                 Player_p.destroy();
+            }else{
+                console.log('未找到第 '+level+' 关卡Prefab');
             }
         })
     }
 
-    GteCollior(v1:Vec2,v2:Vec2,v1rect:Size):string{
-        if         (v1.y + v1rect.y / 2 >= v2.y) {
-            return "Down";
-        } else  if (v1.y - v1rect.y / 2 <= v2.x) {
-                return "Up";
-        }else  if (v1.x + v1rect.x / 2 <= v2.x) {
-            return "Right";
-        }else  if (v1.x - v1rect.x / 2 >= v2.x) {
-            return "Left";
-        }
+
+    GteCollior(P0:Vec2,P1:Vec2):number{
+        var dx = P0.x - P1.x;
+        var dy = P0.y - P1.y;
+        var dir = new Vec2(dx,dy);
+        //根据朝向计算出夹角弧度
+        var angle = dir.signAngle(new Vec2(1,0));
+        //将弧度转换为欧拉角
+        return angle / Math.PI * 180;
     }
 }
 
