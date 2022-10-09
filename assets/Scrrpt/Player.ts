@@ -24,26 +24,37 @@ export class Player extends Component {
         this.PlayerAnim=this.Player.getComponent(Animation);
         this.PlayerRigidBody2D=this.Player.getComponent(RigidBody2D);
 
-        let collider = this.Player.getComponent(PolygonCollider2D);
-        if (collider) {
-            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+        let PCollider2D = this.Player.getComponent(PolygonCollider2D);
+        if (PCollider2D) {
+            PCollider2D.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
-
+        let BCollider2D = this.Player.getComponent(BoxCollider2D);//适用于踩，跳等，判断相对位置
+        if (BCollider2D) {
+            BCollider2D.on(Contact2DType.BEGIN_CONTACT, this.onBeginBox2DContact, this);
+        }
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
         input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     }
 
     onBeginContact(selfCollider: PolygonCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        // GameManager.Instance().GteCollior(new Vec2(selfCollider.node.position.x,selfCollider.node.position.y),
-        // contact.getManifold().points[0])>180
-        if ((this.IsJump&&this.timeTidat<=0)) {
-            this.IsJump = false;
-            this.PlayerAnim.play("Player_ider");
-        }else
+        //let signAngle=GameManager.Instance().GteCollior(new Vec2(selfCollider.node.position.x,selfCollider.node.position.y),contact.getWorldManifold().points[0]);
+        // console.log('BBBBB');
+        // if ((this.IsJump&&this.timeTidat<=0)) {
+        //     this.IsJump = false;
+        //     this.PlayerAnim.play("Player_ider");
+        // }else
         if(otherCollider.node.name=='Player_g'){
             console.log('游戏通关');
         }
     }
+
+    onBeginBox2DContact(selfCollider: PolygonCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
+        if ((this.IsJump&&this.timeTidat<=0)) {
+            this.IsJump = false;
+            this.PlayerAnim.play("Player_ider");
+        }
+    }
+
 
 
 

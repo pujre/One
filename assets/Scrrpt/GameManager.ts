@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, instantiate, resources, Prefab, Vec3, find, UITransform, PhysicsSystem2D, EPhysics2DDrawFlags, CCBoolean, Vec2, Rect, Size } from 'cc';
+import { _decorator, Component, Node, instantiate, resources, Prefab, Vec3, find, UITransform, PhysicsSystem2D, EPhysics2DDrawFlags, CCBoolean, Vec2, Rect, Size, input, Input, EditBox, misc, math } from 'cc';
 import { Control } from './Control';
 const { ccclass, property } = _decorator;
 
@@ -15,6 +15,8 @@ export class GameManager extends Component {
     @property(Node)
     GameNode:Node=null;
     LevelNode:any=null;
+
+
 
     LevelNodeSize:Node=null;
     LevelNodeSizeUITransform:UITransform=null;
@@ -82,14 +84,14 @@ export class GameManager extends Component {
     }
 
 
+    ///P0:玩家坐标
+    ///P1：碰撞点坐标
     GteCollior(P0:Vec2,P1:Vec2):number{
-        var dx = P0.x - P1.x;
-        var dy = P0.y - P1.y;
-        var dir = new Vec2(dx,dy);
-        //根据朝向计算出夹角弧度
-        var angle = dir.signAngle(new Vec2(1,0));
-        //将弧度转换为欧拉角
-        return angle / Math.PI * 180;
+        let radian=new Vec2(P1.x-P0.x,P1.y-P0.y).signAngle(new Vec2(0,1));
+        console.log('弧度:'+radian);
+        let degree=radian/Math.PI*180;//将弧度转换为欧拉角
+        console.log('欧拉角:'+radian);
+        return degree;
     }
 }
 
