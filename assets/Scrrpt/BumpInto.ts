@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Sprite, Color, tween, Enum, Contact2DType, animation, color, Vec3, Vec2, Size, math } from 'cc';
+import { _decorator, Component, Node, BoxCollider2D, IPhysics2DContact, Sprite, Color, tween, Enum, Contact2DType, animation, color, Vec3, Vec2, Size, math, PolygonCollider2D } from 'cc';
 import { AnimName } from './AnimName';
 const { ccclass, property } = _decorator;
 
@@ -9,6 +9,14 @@ export class BumpInto extends Component {
     NodeAnimName:AnimName=AnimName._Color;
     @property({displayName:'碰到后变得颜色',visible(){return this.NodeAnimName==AnimName._Color}})
     AnimColor:Color= new Color(255,255,255,255);
+    @property({displayName:'移动到的位置',visible(){return this.NodeAnimName==AnimName._Position}})
+    TagPosition:Vec2= new Vec2(0,0);
+    @property({displayName:'移动速度',visible(){return this.NodeAnimName==AnimName._Position}})
+    MoveSpeed:number= 1;
+    @property({displayName:'是否启动触发器',visible(){return this.NodeAnimName==AnimName._Position}})
+    IsTrigger:boolean= false;
+    @property({displayName:'触发次数',visible(){return this.NodeAnimName==AnimName._Position}})
+    TriggerNumber:number= 1;
     @property({type:Node,displayName:'要删除的物品',visible(){return this.NodeAnimName==AnimName._Delete}})
     AnimDeleteNode:Node=null;
     @property({displayName:'是否触发',visible () {return this.NodeAnimName==AnimName._Delete&&false}})
@@ -25,10 +33,24 @@ export class BumpInto extends Component {
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
+        if(this.IsTrigger){
+            let Triggercollider = this.node.getComponent(PolygonCollider2D);
+            if (Triggercollider) {
+                Triggercollider.on(Contact2DType.BEGIN_CONTACT, this.onBeginTriggerContact, this);
+            }
+        }
     }
 
     update(deltaTime: number) {
        
+    }
+
+    onBeginTriggerContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
+        if(this.TriggerNumber>0){
+            this.TriggerNumber--;
+            let t1 = tween(this.node).to(this.MoveSpeed, { position: new Vec3(this.TagPosition.x, this.TagPosition.y, 0)})
+            t1.start();
+        }
     }
 
 
@@ -40,7 +62,6 @@ export class BumpInto extends Component {
                     break;
                 case AnimName._Delete:
                     if (this.WhetherToTrigger) return;
-                    console.log('__Delete,钥匙');
                     this.WhetherToTrigger = true;
                     setTimeout(() => {
                         this.node.destroy();
