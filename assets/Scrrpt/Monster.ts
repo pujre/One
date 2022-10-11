@@ -11,10 +11,13 @@ export class Monster extends PropBase {
     Speed:number=1;
     @property({range:[1,10,0.1],slide:true,displayName:'怪物X秒后删除',visible () {return this.MonsterBehaviorType==MonsterBehavior._Prop_1}})
     TimesOut:number=10;
+    @property({range:[1,10,0.1],slide:true,displayName:'怪物移动速度',visible () {return this.MonsterBehaviorType==MonsterBehavior._Move}})
+    MoveSpeed:number=10;
 
     ReadyToDelete:number=0;//准备状态
     TimeTodiele=0;
     AccelDirection=1;
+
     
 
     start() {
@@ -37,9 +40,9 @@ export class Monster extends PropBase {
     }
 
     onBeginContact(selfCollider: BoxCollider2D, otherCollider: BoxCollider2D, contact: IPhysics2DContact | null) {
-        // if(this.MonsterBehaviorType==MonsterBehavior._Move){
+        if(this.MonsterBehaviorType==MonsterBehavior._Move){
 
-        // }
+        }
     }
 
     update(deltaTime: number) {
@@ -54,7 +57,7 @@ export class Monster extends PropBase {
                     }
                     break
                 case MonsterBehavior._Move:
-                    this.node.position = this.node.position.add3f(this.AccelDirection * 5, 0, 0);
+                    this.node.position = this.node.position.add3f(this.AccelDirection * this.MoveSpeed, 0, 0);
                     break;
             }
         }
