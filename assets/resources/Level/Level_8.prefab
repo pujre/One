@@ -638,8 +638,8 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -100,
-      "y": 299.28599999999994,
+      "x": 0,
+      "y": 463.619,
       "z": 0
     },
     "_lrot": {
@@ -1187,6 +1187,14 @@
       "b": 255,
       "a": 255
     },
+    "TagPosition": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "MoveSpeed": 1,
+    "IsTrigger": false,
+    "TriggerNumber": 1,
     "AnimDeleteNode": null,
     "WhetherToTrigger": false,
     "HideNode": null,
@@ -1422,6 +1430,14 @@
       "b": 255,
       "a": 255
     },
+    "TagPosition": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "MoveSpeed": 1,
+    "IsTrigger": false,
+    "TriggerNumber": 1,
     "AnimDeleteNode": null,
     "WhetherToTrigger": false,
     "HideNode": null,
